@@ -1,6 +1,6 @@
-export default function Category({ title, filterProducts }) {
+export default function Category({ title, selectCategory }) {
   return (
-    <span className="categories--item" onClick={filterProducts}>
+    <span className="categories--item" onClick={selectCategory}>
       {title}
     </span>
   );

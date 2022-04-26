@@ -1,28 +1,24 @@
-import './App.css';
-import categoryList from './fake-data/all-categories';
-import productList from './fake-data/all-products';
-import Header from './components/Header';
-import Categories from './components/Categories';
-import Products from './components/Products';
-import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Header from './components/Header.js';
+import ProductsPage from './pages/ProductsPage.js';
+import ProductDetailsPage from './pages/ProductDetailsPage.js';
 
 function App() {
-  const [allProducts, setProducts] = useState(productList);
-
-  function filterProducts(e) {
-    const selectedCategory = e.target.textContent;
-    const filteredProducts = productList.filter(
-      (product) => `FAKE: ${product.category}` === selectedCategory
-    );
-    setProducts(filteredProducts);
-  }
   return (
-    <div className="App">
-      <Header />
-      <Categories categories={categoryList} filterProducts={filterProducts} />
-      <Products displayedProducts={allProducts} />
-    </div>
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<ProductDetailsPage />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
+
+<div className="App">
+  <Header />
+</div>;
 
 export default App;
