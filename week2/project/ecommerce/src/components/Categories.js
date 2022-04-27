@@ -1,17 +1,25 @@
 import Category from './Category';
 import { useEffect, useState } from 'react';
 
-function Categories({ setSelectedCategory, checkLoading: [isLoading, SetIsLoading] }) {
+function Categories({
+  setSelectedCategory,
+  checkLoading: [isLoading, setIsLoading],
+  checkError: [isError, setIsError],
+}) {
   const [categories, setCategories] = useState([]);
 
-  async function getCategories() {
-    const response = await fetch('https://fakestoreapi.com/products/categories');
-    const allCategories = await response.json();
-    setCategories(allCategories);
-    SetIsLoading(false);
-  }
-
   useEffect(() => {
+    async function getCategories() {
+      try {
+        const response = await fetch('https://fakestoreapi.com/products/categories');
+        const allCategories = await response.json();
+        setCategories(allCategories);
+      } catch (error) {
+        console.log(error);
+        setIsError(true);
+      }
+      setIsLoading(false);
+    }
     getCategories();
   }, []);
 
@@ -22,14 +30,14 @@ function Categories({ setSelectedCategory, checkLoading: [isLoading, SetIsLoadin
 
   return (
     <div className="categories">
-      {isLoading ? (
+      {isError ? (
+        <span>BAD REQUEST!</span>
+      ) : isLoading ? (
         <span>Loading...</span>
-      ) : categories ? (
+      ) : (
         categories.map((categoryName, index) => (
           <Category title={categoryName} selectCategory={selectCategory} key={index} />
         ))
-      ) : (
-        <span>BAD REQUEST!</span>
       )}
     </div>
   );
