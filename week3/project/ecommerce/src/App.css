@@ -12,6 +12,13 @@
   margin: 0;
 }
 
+.nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin: 10px;
+}
+
 .subheader {
   font-size: 2em;
   margin: 2rem 0;
@@ -24,6 +31,10 @@
   font-weight: 700;
   margin: 2px;
   padding: 12px;
+}
+
+.categories--item.selected {
+  background-color: #bdbdc1;
 }
 
 .categories {
@@ -51,12 +62,24 @@
   cursor: pointer;
 }
 
+.product--image-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .product--image {
   margin-bottom: auto;
   margin-top: auto;
   max-height: 300px;
   object-fit: contain;
   width: 100%;
+}
+
+.product--image-favorite {
+  width: 20px;
+  height: 20px;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .product--title {

@@ -1,31 +1,12 @@
 import Category from './Category';
-import { useEffect, useState } from 'react';
+import useFetch from '../hooks/useFetch';
 
-function Categories({
-  setSelectedCategory,
-  checkLoading: [isLoading, setIsLoading],
-  checkError: [isError, setIsError],
-}) {
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    async function getCategories() {
-      try {
-        const response = await fetch('https://fakestoreapi.com/products/categories');
-        const allCategories = await response.json();
-        setCategories(allCategories);
-      } catch (error) {
-        console.log(error);
-        setIsError(true);
-      }
-      setIsLoading(false);
-    }
-    getCategories();
-  }, []);
+function Categories({ selectedCategory, setSelectedCategory }) {
+  const { data: categories, isLoading, isError } = useFetch('https://fakestoreapi.com/products/categories');
 
   function selectCategory(e) {
-    const selectedCategory = e.target.textContent;
-    setSelectedCategory(selectedCategory);
+    const selectedCategoryName = e.target.textContent;
+    setSelectedCategory(selectedCategoryName);
   }
 
   return (
@@ -35,8 +16,14 @@ function Categories({
       ) : isLoading ? (
         <span>Loading...</span>
       ) : (
+        categories &&
         categories.map((categoryName, index) => (
-          <Category title={categoryName} selectCategory={selectCategory} key={index} />
+          <Category
+            title={categoryName}
+            selectCategory={selectCategory}
+            selectedCategory={selectedCategory}
+            key={index}
+          />
         ))
       )}
     </div>

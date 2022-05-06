@@ -1,49 +1,14 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-
+import { useState } from 'react';
 import Product from './Product';
+import useFetch from '../hooks/useFetch';
 
-function Products({
-  selectedCategory,
-  checkLoading: [isLoading, setIsLoading],
-  checkError: [isError, setIsError],
-}) {
-  const [products, setProducts] = useState([]);
-  const navigate = useNavigate();
+function Products({ selectedCategory }) {
+  let url;
+  selectedCategory === ''
+    ? (url = 'https://fakestoreapi.com/products/')
+    : (url = `https://fakestoreapi.com/products/category/${selectedCategory}`);
 
-  useEffect(() => {
-    async function getProducts() {
-      try {
-        const response = await fetch('https://fakestoreapi.com/products/');
-        const productList = await response.json();
-        setProducts(productList);
-      } catch (error) {
-        console.log(error);
-        setIsError(true);
-      }
-      setIsLoading(false);
-    }
-
-    async function getFilteredProducts() {
-      try {
-        const response = await fetch(
-          `https://fakestoreapi.com/products/category/${selectedCategory}`
-        );
-        const filteredProductList = await response.json();
-        setProducts(filteredProductList);
-      } catch (error) {
-        console.log(error);
-        setIsError(true);
-      }
-      setIsLoading(false);
-    }
-
-    selectedCategory === '' ? getProducts() : getFilteredProducts();
-  }, [selectedCategory]);
-
-  function navigateToProduct(id) {
-    navigate(`/products/${id}`);
-  }
+  const { data: products, isLoading, isError } = useFetch(url);
 
   return (
     <ul className="products">
@@ -52,14 +17,9 @@ function Products({
       ) : isLoading ? (
         <span>Loading...</span>
       ) : (
+        products &&
         products.map((product) => (
-          <Product
-            id={product.id}
-            title={product.title}
-            image={product.image}
-            key={product.id}
-            navigate={navigateToProduct}
-          />
+          <Product id={product.id} title={product.title} image={product.image} key={product.id} />
         ))
       )}
     </ul>

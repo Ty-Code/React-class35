@@ -1,18 +1,19 @@
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
-function SubHeader({ setSelectedCategory }) {
-  const navigate = useNavigate();
+function SubHeader() {
+  const location = useLocation().pathname;
+  const [title, setTitle] = useState('Products');
 
-  function returnToStatusQuo() {
-    navigate('/');
-    setSelectedCategory('');
-  }
+  useEffect(() => {
+    if (location === '/') {
+      setTitle('Products');
+    } else if (location === '/favorites') {
+      setTitle('Favorites');
+    }
+  }, [location]);
 
-  return (
-    <h1 className="subheader" onClick={returnToStatusQuo}>
-      Products
-    </h1>
-  );
+  return <h1 className="subheader">{title}</h1>;
 }
 
 export default SubHeader;
