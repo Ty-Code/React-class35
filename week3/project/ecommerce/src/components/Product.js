@@ -26,7 +26,7 @@ function Product({ title, image, id }) {
             alt={title}
           />
 
-          <img className="product--image" src={image} alt="product_image" />
+          <img className="product--image" src={image} alt={title} />
         </div>
 
         <span className="product--title">{title}</span>
